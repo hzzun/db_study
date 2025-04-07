@@ -1,0 +1,8 @@
+# Register Meeting
+POST http://localhost:8080/api/meetings
+Content-Type: application/json
+
+{
+  "date": "2024-04-08",
+  "seats": 20
+}
