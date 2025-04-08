@@ -12,5 +12,5 @@ class Meeting(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val date: LocalDate,
-    val seats: Int,
+    var seats: Int,
 )
