@@ -14,7 +14,7 @@ class PostEntity(
     fun toPost(): Post {
         return Post(
             id = this.id!!,
-            content = content
+            content = this.content
         )
     }
 }
