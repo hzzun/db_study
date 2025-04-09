@@ -1,5 +1,7 @@
 package com.db_study.support.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisConnectionFactory
@@ -17,12 +19,12 @@ class RedisConfig {
     }
 
     @Bean
-    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
+    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory, objectMapper: ObjectMapper): RedisTemplate<String, Any> {
         val redisTemplate = RedisTemplate<String, Any>()
         redisTemplate.connectionFactory = redisConnectionFactory
 
         // JSON 직렬화/역직렬화 설정
-        val serializer = GenericJackson2JsonRedisSerializer()
+        val serializer = GenericJackson2JsonRedisSerializer(objectMapper.registerKotlinModule())
         redisTemplate.valueSerializer = serializer
         redisTemplate.hashValueSerializer = serializer
         redisTemplate.keySerializer = StringRedisSerializer()
