@@ -17,11 +17,17 @@ class RedisConfig {
     }
 
     @Bean
-    fun redisTemplate(): RedisTemplate<String, Any> {
+    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
         val redisTemplate = RedisTemplate<String, Any>()
-        redisTemplate.connectionFactory = redisConnectionFactory()
+        redisTemplate.connectionFactory = redisConnectionFactory
+
+        // JSON 직렬화/역직렬화 설정
+        val serializer = GenericJackson2JsonRedisSerializer()
+        redisTemplate.valueSerializer = serializer
+        redisTemplate.hashValueSerializer = serializer
         redisTemplate.keySerializer = StringRedisSerializer()
-        redisTemplate.valueSerializer = GenericJackson2JsonRedisSerializer()
+        redisTemplate.afterPropertiesSet()
+
         return redisTemplate
     }
 }
