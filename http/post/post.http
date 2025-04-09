@@ -1,0 +1,7 @@
+### Post Append
+POST http://localhost:8080/posts
+Content-Type: application/json
+
+{
+  "content": "This is content"
+}
