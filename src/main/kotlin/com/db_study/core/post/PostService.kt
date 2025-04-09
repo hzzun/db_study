@@ -24,7 +24,7 @@ class PostService(
         val postFromDb = postRepository.findById(id) ?: throw Exception("Post with ID $id not found")
 
         // 다시 Redis 에 저장 (캐싱)
-        redisTemplate.opsForValue().set(id.toString(), postFromDb, 300, TimeUnit.SECONDS)
+        redisTemplate.opsForValue().set(id.toString(), postFromDb, 60, TimeUnit.SECONDS)
 
         return postFromDb
     }
