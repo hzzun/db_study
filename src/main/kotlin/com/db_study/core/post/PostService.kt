@@ -13,11 +13,11 @@ class PostService(
 ) {
     fun getSinglePost(id: Long): Post {
         // 캐싱된 데이터가 있는지 조회
-        val cachedPost = redisTemplate.opsForValue().get(id.toString())
+        val cachedPostContent = redisTemplate.opsForValue().get("post:$id") as String?
 
         // 캐싱된 데이터가 있다면 그대로 리턴
-        if (cachedPost != null) {
-            return objectMapper.convertValue(cachedPost, Post::class.java)
+        if (cachedPostContent != null) {
+            return Post(id, cachedPostContent)
         }
 
         // 캐싱된 데이터가 없으면 데이터베이스에서 조회
@@ -29,6 +29,12 @@ class PostService(
         return postFromDb
     }
 
+    fun getSinglePostWithoutRedis(id: Long): Post {
+        val postFromDb = postRepository.findById(id) ?: throw Exception("Post with ID $id not found")
+
+        return postFromDb
+    }
+
     fun append(content: String): Long {
         // 데이터베이스 저장
         val savedPost = postRepository.save(content)
@@ -36,6 +42,15 @@ class PostService(
 
         // Redis 저장
         redisTemplate.opsForValue().set(savedPostId.toString(), savedPost, 300, TimeUnit.SECONDS)
+
+        return savedPostId
+    }
+
+    fun appendOnlyContentToRedis(content: String): Long {
+        val savedPost = postRepository.save(content)
+        val savedPostId = savedPost.id
+
+        redisTemplate.opsForValue().set("post:$savedPostId", content, 300, TimeUnit.SECONDS)
 
         return savedPostId
     }

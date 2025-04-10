@@ -9,3 +9,12 @@ Content-Type: application/json
 ### Get Single Post
 GET http://localhost:8080/posts/1
 Content-Type: application/json
+
+
+### Post Append
+POST http://localhost:8080/posts/only-content
+Content-Type: application/json
+
+{
+  "content": "This is content!"
+}

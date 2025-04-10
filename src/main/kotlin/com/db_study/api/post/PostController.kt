@@ -20,9 +20,21 @@ class PostController(
         return ResponseEntity.ok(PostResponse.toResponse(result))
     }
 
+    @GetMapping("/posts/db/{id}")
+    fun getSinglePostWithoutRedis(@PathVariable id: Long): ResponseEntity<PostResponse> {
+        val result = postService.getSinglePostWithoutRedis(id)
+        return ResponseEntity.ok(PostResponse.toResponse(result))
+    }
+
     @PostMapping("/posts")
     fun append(@RequestBody request: PostAppendRequest): ResponseEntity<Long> {
         val result = postService.append(request.content)
+        return ResponseEntity.ok(result)
+    }
+
+    @PostMapping("/posts/only-content")
+    fun appendOnlyContent(@RequestBody request: PostAppendRequest): ResponseEntity<Long> {
+        val result = postService.appendOnlyContentToRedis(request.content)
         return ResponseEntity.ok(result)
     }
 }
