@@ -1,0 +1,3 @@
+### Topic get
+GET http://localhost:8080/topic/1
+Content-Type: application/json
