@@ -13,8 +13,8 @@ class CommentController(
     private val commentService: CommentService
 ) {
     @PostMapping("/comments/{postId}")
-    fun append(@PathVariable postId: Long, @RequestBody request: CommentAppendRequest): ResponseEntity<Long> {
-        val result = commentService.append(postId, request.content)
-        return ResponseEntity.ok(result)
+    fun append(@PathVariable postId: Long, @RequestBody request: CommentAppendRequest): ResponseEntity<String> {
+        commentService.appendBulk(postId, request.content)
+        return ResponseEntity.ok("댓글 작성 완료")
     }
 }

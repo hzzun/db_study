@@ -5,4 +5,6 @@ interface CommentRepository {
     fun findByPostId(postId: Long): List<Comment>
 
     fun save(postId: Long, content: String): Comment
+
+    fun saveAll(postId: Long, comments: Iterable<Comment>)
 }
